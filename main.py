@@ -1,5 +1,7 @@
 import sys
 import os
+import mimetypes
+import openxmllib
 import comtypes.client
 import extract_msg
 
