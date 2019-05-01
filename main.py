@@ -19,7 +19,7 @@ class Stager:
         for att in msg.attachments:
             att.save(useFileName=True, customPath=dest_dir)
 
-    def cleanup():
+    def cleanup(self):
         self.word.Quit();
 
 ##
