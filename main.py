@@ -16,6 +16,9 @@ class Stager:
         doc.SaveAs(os.path.join(dest_dir, os.path.basename(source_path)), FileFormat=wdFormatPdf)
         doc.Close()
 
+    def stage_files_from_csv(self, csv_path):
+        pass
+
     def extract_attachments(self, source_path, dest_dir):
         msg = extract_msg.Message(source_path)
         for att in msg.attachments:
@@ -27,4 +30,5 @@ class Stager:
 ##
 
 stager = Stager()
+stager.stage_files_from_csv('./File List.csv')
 stager.cleanup()
