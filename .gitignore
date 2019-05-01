@@ -1,3 +1,5 @@
 *.docx
 *.pdf
 *.msg
+*.csv
+.~lock*
