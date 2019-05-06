@@ -11,11 +11,14 @@ from shutil import copy, copyfile
 
 wdFormatPdf = 17
 
+stage_excel = False
+
 class Stager:
     def __init__(self, dest_dir, source_dir):
         self.dest_dir = dest_dir
         self.source_dir = source_dir
         self.word = comtypes.client.CreateObject('Word.Application')
+        self.excel = comtypes.client.CreateObject('Excel.Application')
         self.file_list = []
         self.problem_files = []
         self.file_count = 0
@@ -52,6 +55,15 @@ class Stager:
                 distutils.dir_util.mkpath(file_path)
                 doc.SaveAs(os.path.join(file_path, file_name + '.pdf'), FileFormat=wdFormatPdf)
                 doc.Close()
+            except comtypes.COMError as err:
+                raise Exception('ERROR while staging: ' + source_path + ' - ' + err.args[2][0])
+        elif stage_excel and (file_type == 'xls' or file_type == 'xlsx' or file_type == 'xlsm'):
+            try:
+                wb = self.excel.Workbooks.Open(source_path)
+                file_path = self.source_to_dest(source_path)
+                distutils.dir_util.mkpath(file_path)
+                wb.ExportAsFixedFormat(0, os.path.join(file_path, file_name + '.pdf'), 1, 0)
+                wb.Close()
             except comtypes.COMError as err:
                 raise Exception('ERROR while staging: ' + source_path + ' - ' + err.args[2][0])
         elif file_type == 'msg':
